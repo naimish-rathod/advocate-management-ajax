@@ -1,11 +1,9 @@
-
 body{
 	background: #FFFFFF;
 }
 .menu-img{
 	width: 45px;
 	height: 45px;
-
 }
 .bg-purp {
     background: #352741 !important;
@@ -135,7 +133,8 @@ h1 em {
     position:absolute; 
     content: '';
     height: 7px;
-    width: 7px; border-radius:50%;
+    width: 7px; 
+    border-radius:50%;
     bottom: 12px;
 }
 .thirteen h1:before {
@@ -156,7 +155,7 @@ h1 em {
 .text-valign {
 	vertical-align: middle !important;
 }
-.option-sty-2{
+.option-sty-2 {
 	width: 70px;
     text-align: center;
 }
@@ -204,11 +203,54 @@ h1 em {
     height: 100px;
     object-fit: cover;
 }
-.head-widh h1{
+.head-widh h1 {
     width: 250px !important;
 }
 .radius {
   border-radius: 20px;
  }
+.approve-pop {
+    background: #EBDAEF;
+    padding: 9px;
+    border: 2px outset;
+    border-radius: 11px;
+    position: fixed;
+    top: 12%;
+    right: 0;
+    transform: translateX(100%);
+    visibility: hidden; 
+}
+@keyframes moveright {
+    100% {
+        transform: translateX(0%);
+    }
+}
+.approve-pop-show {
+    visibility: visible;
+    animation: moveright 0.9s linear(0 0%, 0 2.27%, 0.02 4.53%, 0.04 6.8%, 0.06 9.07%, 0.1 11.33%, 0.14 13.6%, 0.25 18.15%, 0.39 22.7%, 0.56 27.25%, 0.77 31.8%, 1 36.35%, 0.89 40.9%, 0.85 43.18%, 0.81 45.45%, 0.79 47.72%, 0.77 50%, 0.75 52.27%, 0.75 54.55%, 0.75 56.82%, 0.77 59.1%, 0.79 61.38%, 0.81 63.65%, 0.85 65.93%, 0.89 68.2%, 1 72.7%, 0.97 74.98%, 0.95 77.25%, 0.94 79.53%, 0.94 81.8%, 0.94 84.08%, 0.95 86.35%, 0.97 88.63%, 1 90.9%, 0.99 93.18%, 0.98 95.45%, 0.99 97.73%, 1 100%) forwards;
+    right: 23px;
+}
+.confirm-box {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    visibility: hidden;
+    transition: transform 0.3s, top 0.3s;
+}
 
+.confirm-box-show {
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.0);
+    visibility: visible;
+}
+.time-par {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.time {
+  display: unset;
+  width: 41%;
+}
 

@@ -98,6 +98,18 @@ $user = $_SESSION['uname'];
   <link rel="stylesheet" type="text/css" href="css/index-style.css">
  </head>
 <body>
+	<!-- confirm box -->
+	<div class="card text-center confirm-box bg-l-purp">
+		<div class="card-header">Are you sure to reject ?</div>
+		<div class="card-body d-flex justify-content-around">
+			<button class="btn bg-purp col-wh" id="confirmDel">Yes</button>  
+			<button class="btn bg-purp col-wh" id="closeConfirm">No</button>
+		</div>
+	</div>
+	<!-- slide (toast) notification -->
+	<div class="approve-pop" id="app-pop">
+		<img src="img/accept-icon.svg"> <span> Approved successfully</span>
+	</div>
 	<!-- ===========================
 				navigation bar
 	 =============================== -->
@@ -223,37 +235,40 @@ $user = $_SESSION['uname'];
 		 		<tr>
 		 				<th>Profile picture</th>
 						<td>
-							<input type="file" name="profile" class="form-control">
+							<input type="file" name="profile" id="profile" class="form-control">
 						</td>
 				</tr>
 		 		<tr>
 		 			<th>Employee name</th>
-		 			<td><input type="text" name="name" class="form-control"></td>
+		 			<td><input type="text" name="name" id="name" class="form-control"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Employee password</th>
-		 			<td><input type="text" name="pwd" class="form-control"></td>
+		 			<td><input type="text" name="pwd" id="pwd" class="form-control"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Education</th>
-		 			<td><input type="text" name="edu" class="form-control"></td>
+		 			<td><input type="text" name="edu" id="edu" class="form-control"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Experiance</th>
-		 			<td><input type="text" name="exp" class="form-control"></td>
+		 			<td><input type="text" name="exp" id="exp" class="form-control"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Work speciality</th>
-		 			<td><input type="text" name="work" class="form-control"></td>
+		 			<td><input type="text" name="work" id="work" class="form-control"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Available</th>
-		 			<td><input type="text" name="available" class="form-control"></td>
+		 			<td colspan="3" class="time-par">
+						<input type="time" name="availableIn" id="availableIn" class="form-control time availableIn" placeholder="Availity" required><span>To</span>
+						<input type="time" name="availableOut" id="availableOut" class="form-control time availableOut" placeholder="Availity" required>
+					</td>
 		 		</tr>
 		 		<tr class="text-center">
 		 			<td colspan="2" rowspan="2">
 		 				<input type="reset" name="reset" class="btn bg-purp col-wh radius">
-		 				<input type="submit" name="submit" value="Register" class="btn bg-purp col-wh radius">
+		 				<input type="submit" name="submit" value="Register" class="btn bg-purp col-wh radius" id="registerUser">
 		 			</td> 
 		 		</tr>
 		 	</form>
@@ -267,7 +282,7 @@ $user = $_SESSION['uname'];
     	<h1>Approve employee</h1>
 	</div>
  	 <div class="container mt-4 rounded">
-	  	<table class="table table-striped table-bordered text-center" id="emp">
+	  	<table class="table table-striped table-bordered text-center">
 	  		<thead>
 	  		<tr>
 	  			<th class="table-head-col">Employee Id</th>
@@ -281,7 +296,7 @@ $user = $_SESSION['uname'];
 	  		</tr>
 	  		</thead>
 	  		<tbody class="tempUser">
-	  			<!-- Data is received from ajax  -->
+	  			<!-- Data is received from response.js getTempData(); function  -->
 		  	</tbody>
 	 	</table>
 	 </div>
@@ -306,23 +321,15 @@ $user = $_SESSION['uname'];
 	  			<th class="table-head-col">Available</th>
 	  		</tr>
 	  		</thead>
-	  		<tbody>
-	  		<?php while ($emp_row = $emp_res->fetch_assoc()) { ?> <!--while loop start here -->
-	  		<tr>
-	  			<td><?php echo htmlspecialchars($emp_row['id']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['pwd']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['name']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['edu']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['exp']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['work']); ?> </td>
-	  			<td><?php echo htmlspecialchars($emp_row['available']); ?> </td>
-	  		</tr>
-		 <?php  } ?>  <!--while loop end here -->
+	  		<tbody class="perUser">
+	  			<!-- data is received from response.js getPerData(); function -->
 		  	</tbody>
 		 	 
 	 	</table>
 	 </div>
 </body>
+
+<script src="script/response.js"></script><!-- Ajax jquery -->
 <script>
      document.querySelectorAll('.drop').forEach(item => {
         item.addEventListener('click', function() {
@@ -332,62 +339,6 @@ $user = $_SESSION['uname'];
             document.getElementById('ename').innerText = employeeId;
         });
     });
-
-     // for temp user
-     $(document).ready(function() {
-     	getData();
-     	
-
-     	//for delete user using ajax
-     	$('#rejectUser').click(function(e) {
-     		e.preventDefault();
-     		console.log("click");
-     		
-     		var tempId = $(this).closest('tr').find('.tempId').text();
-     		$.ajax({
-     			type:"POST",
-     			url:"code.php",
-     			data:{
-     				'check-for-delete':true,
-     				'tempId':tempId,
-     			},
-     			success: function(resp){
-     				console.log("resp");
-
-     				$('.tempUser').html("");
-     				getData();
-     			}
-     		});
-     	});
-
-     });
-     // for retrive data from the temp-user table
-     function getData() {
-     	$.ajax({
-     		type:"GET",
-     		url:"fetch.php",
-     		success:function(resp) {
-     			$.each(resp, function(key, value) {
-     				$(".tempUser").append(
-     					'<tr>'+
-     						'<td class="tempId">'+value['id']+'</td>' +
-     						'<td>'+value['pwd']+'</td>' +
-     						'<td>'+value['name']+'</td>' +
-     						'<td>'+value['edu']+'</td>' +
-     						'<td>'+value['exp']+'</td>' +
-     						'<td>'+value['work']+'</td>' +
-     						'<td>'+value['available']+'</td>' +
-     						'<td>'+
-     							 '<a class="btn bg-purp col-wh radius" href="add-new-user.php?id='+value['id']+'">'+'Approve'+'</a> '+
-     							 ' <button class="btn bg-purp col-wh radius" id="rejectUser">'+'Reject'+'</button>'+
-     						'</td>'+
-     					'</tr>'
-     					);
-     			})
-     		}
-     	});
-     }
-
 </script>
 </html>
 
