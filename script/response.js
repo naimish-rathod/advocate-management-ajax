@@ -52,14 +52,15 @@ $(document).ready(function() {
 
 		        $.ajax({
 		        	type:"POST",
-		        	url:"register-emp-admin.php",
+		        	url:"register-emp-user.php",
 		        	data:addUser,
 		        	contentType: false,  
 	            	processData: false, 
 		        	success: function(resp) {
 		        		console.log(resp);
-		        		$('.perUser').html("");
-		        		getPerData();
+		        		$('#temp-user').html("");
+		        		getTempData();
+		        		$('#resetBtn').click();
 		        	}
 		        })
 		
@@ -107,6 +108,7 @@ $(document).ready(function() {
     //for approve user
 	     $(document).on('click' , '#approveUser', function(e) {
 	     	e.preventDefault();
+	     	addUser.append("name", $("#name").val());
 
 	     	var tempId = $(this).closest('tr').find('.tempId').text();
 	     	var succPop = $("#app-pop");
@@ -119,6 +121,7 @@ $(document).ready(function() {
 	     		},
 	     		success:function(resp) {
 	     				$('.perUser').html("");
+	     				$(".dropItem").html("");
 	     			getPerData();
 	     				$('.tempUser').html("");
      				getTempData();
@@ -130,6 +133,31 @@ $(document).ready(function() {
 	     	});
 	     });
   });   
+
+ 	// For insert new case record
+ 		$(document).on('click', '#registerCase', function(e) {
+ 			e.preventDefault();
+
+ 			var newCase = new FormData();
+ 			 newCase.append("employeeId", $("#employeeId").val());//From hidden input
+ 			 newCase.append("cname", $("#cname").val());
+ 			 newCase.append("ctype", $("#ctype").val());
+ 			 newCase.append("cdesc", $("#cdesc").val());
+ 			$.ajax({
+ 				type:"POST",
+ 				url:"register-client.php",
+ 				data:newCase,
+ 				contentType: false,
+        		processData: false,
+ 				success:function(resp) {
+ 					$('#resetBtn').click();
+ 					totalCases();
+ 					present_cases();
+ 				}
+
+ 			})
+ 		})
+
      // for retrive data from the temp-user table
 	     function getTempData() {
 	     	$.ajax({
@@ -138,6 +166,7 @@ $(document).ready(function() {
 	     		data:{
 	     				'tempData':true,
 	     			},
+	     		dataType: "json",
 	     		success:function(resp) {
 	     			$.each(resp, function(key, value) {
 	     				$(".tempUser").append(
@@ -160,29 +189,70 @@ $(document).ready(function() {
 	     	});
 	     }
 	// for retrive data from the all-adv table
-	     function getPerData() {
-	     	$.ajax({
-	     		type:"GET",
-	     		url:"fetch.php",
-	     		data:{
-	     				'perData':true,
-	     			},
-	     		success:function(resp){
-	     			$.each(resp, function(key, value){
-	     				$(".perUser").append(
-	     					'<tr>'+
-	     						'<td>'+value['id']+'</td>'+
-	     						'<td>'+value['pwd']+'</td>'+
-	     						'<td>'+value['name']+'</td>'+
-	     						'<td>'+value['edu']+'</td>'+
-	     						'<td>'+value['exp']+'</td>'+
-	     						'<td>'+value['work']+'</td>'+
-	     						'<td>'+value['available']+'</td>'+
-	     					'</tr>'
-	     					);
-	     			})
-	     		}
-	     	});
-	     }
+	    function getPerData() {
+	    $.ajax({
+	        type: "GET",
+	        url: "fetch.php",
+	        data: {
+	            'perData': true,
+	        },
+	        success: function (resp) {
+	            $.each(resp, function (key, value) {
+	                $(".perUser").append(
+	                    '<tr>' +
+	                        '<td>' + value['id'] + '</td>' +
+	                        '<td>' + value['pwd'] + '</td>' +
+	                        '<td>' + value['name'] + '</td>' +
+	                        '<td>' + value['edu'] + '</td>' +
+	                        '<td>' + value['exp'] + '</td>' +
+	                        '<td>' + value['work'] + '</td>' +
+	                        '<td>' + value['available'] + '</td>' +
+	                    '</tr>'
+	                );
 
-	
+	                $(".dropItem").append(
+	                    '<li class="dropdown-item drop" data-id="' + value['id'] + '">' + value['name'] + '</li>'
+	                );
+	            });
+
+	            // Add event listener to each dropdown item to get id to the hidden input field
+	            document.querySelectorAll('.drop').forEach(item => {
+	                item.addEventListener('click', function () {
+	                    // Set the hidden input value to the selected employee's ID
+	                    const employeeId = this.getAttribute('data-id');
+	                    console.log(employeeId);
+	                    document.getElementById('employeeId').value = employeeId;
+	                    document.getElementById('ename').innerText = this.innerText;
+	                });
+	            });
+	        }
+	    });
+	}
+	//Get the total case count 
+		function totalCases(){
+			$.ajax({
+				type:"GET",
+				url:"fetch.php",
+				data:{
+					total_cases : true,
+				},
+				success:function(resp) {
+					$("#totalCasePill").text(resp);
+				},
+			})
+		}
+		totalCases();
+	//Get the today's case count
+		function present_cases() {
+			$.ajax({
+				type:"GET",
+				url:"fetch.php",
+				data:{
+					present_cases: true,
+				},
+				success:function(resp) {
+					$("#PresentCase").text(resp);
+				}
+			})
+		}
+	present_cases();

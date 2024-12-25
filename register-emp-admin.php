@@ -1,6 +1,6 @@
 <?php
 include 'connection.php';
-
+// delete
 extract($_POST);
 $fileName = $_FILES["profile"]["name"];
 $tempName = $_FILES["profile"]["tmp_name"];

@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 					variable declaration 
 			====================================*/
 
-	$present_cases = 0; // Default value if no cases are found
 	$present_emp = 0;  // Default value if no employees are marked present
 	$curdate = date('Y-m-d'); // for current date
 	$ntfyCountPend = 0;
@@ -61,14 +60,14 @@ $user = $_SESSION['uname'];
 	$totalCase = $ntfyCountDone + $ntfyCountPend;
 
 //query for find today's case
-	$cases=$conn->prepare("SELECT * FROM `work-data` WHERE DATE(`created_at`) = ?");
-	$cases->bind_param("s",$curdate);
-	$cases->execute();
-	$cases->store_result();
+	// $cases=$conn->prepare("SELECT * FROM `work-data` WHERE DATE(`created_at`) = ?");
+	// $cases->bind_param("s",$curdate);
+	// $cases->execute();
+	// $cases->store_result();
 
-	if ($cases->num_rows > 0) {
-    	$present_cases = $cases->num_rows;
-	}
+	// if ($cases->num_rows > 0) {
+    // 	$present_cases = $cases->num_rows;
+	// }
 //query for temp user 
 	$tempUser=$conn->prepare("SELECT * FROM `temp_user` WHERE `status` = ?");
 	$tempUser->bind_param("s", $statuss);
@@ -153,7 +152,7 @@ $user = $_SESSION['uname'];
 	 			<hr class="col-wh">
 	 		<p class="dash-font"><a class="logout-txt dash-font" href="admin-doc.php">Documents</a></p>
 	 			<hr class="col-wh">
-	 		<p class="dash-font ">Total case <span class="badge rounded-pill b-ntfy"> <?php echo htmlspecialchars($totalCase) ?></span></p>
+	 		<p class="dash-font ">Total case <span class="badge rounded-pill b-ntfy" id="totalCasePill"></span></p>
 	 			<hr class="col-wh">
 	 		<p class="dash-font"><a class="logout-txt" href="Logout.php">Logout</a></p>
 	 			<hr class="col-wh">
@@ -165,7 +164,7 @@ $user = $_SESSION['uname'];
 	 <div class="row container-lg mx-auto mt-5">
 	 	<div class="col-sm-8 mt-3"> 
 	 		<table class="table table-bordered text table-striped">
-		 	<form class="form" action="register-client.php" method="get">
+		 	<form class="form" method="get">
 		 		<tr >
 		 			<th colspan="2" class="table-head-col ">
 		 				<h4 class="text-center marg" >Register a new  case</h4>
@@ -176,11 +175,8 @@ $user = $_SESSION['uname'];
 		 			<td> 
 		 				<div class="dropdown">
 		 					<button class="btn bg-purp col-wh radius dropdown-toggle" data-bs-toggle="dropdown" id="ename">Employee list</button>
-		 					<ul class="dropdown-menu">
-		 						<li class="dropdown-item drop" data-id="1">1 Mr. Vishal solanki</li>
-		 						<li class="dropdown-item drop" data-id="2">2 Mr. Naimish rathod</li>
-		 						<li class="dropdown-item drop" data-id="3">3 atul kumar</li>
-		 						<li class="dropdown-item drop" data-id="4">4 ram shah</li>
+		 					<ul class="dropdown-menu dropItem">
+		 						<!-- Result from ajax response.js -->
 		 					</ul>
 		 				</div>
 		 				<input type="hidden" id="employeeId" name="employeeId">
@@ -188,20 +184,20 @@ $user = $_SESSION['uname'];
 		 		</tr>
 		 		<tr>
 		 			<th>Client name</th>
-		 			<td><input type="text" name="cname" class="form-control" placeholder="Enter client name"></td>
+		 			<td><input type="text" name="cname" id="cname" class="form-control" placeholder="Enter client name"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Case type</th>
-		 			<td><input type="text" name="ctype" class="form-control" placeholder="Enter case type"></td>
+		 			<td><input type="text" name="ctype" id="ctype" class="form-control" placeholder="Enter case type"></td>
 		 		</tr>
 		 		<tr>
 		 			<th>Case description</th>
-		 			<td><textarea rows="5" name="cdesc" class="form-control" placeholder="Case discripton"></textarea></td>
+		 			<td><textarea rows="5" name="cdesc" id="cdesc" class="form-control" placeholder="Case discripton"></textarea></td>
 		 		</tr>
 		 		<tr class="text-center">
 		 			<td colspan="2" rowspan="2">
-		 				<input type="reset" name="reset" class="btn bg-purp col-wh radius">
-		 				<input type="submit" name="submit" value="Register" class="btn bg-purp col-wh radius">
+		 				<input type="reset" name="reset" class="btn bg-purp col-wh radius" id="resetBtn">
+		 				<input type="submit" name="submit" value="Register" id="registerCase" class="btn bg-purp col-wh radius">
 		 			</td> 
 		 		</tr>
 		 	</form>
@@ -210,7 +206,7 @@ $user = $_SESSION['uname'];
 	 	<div class="col-sm-4 buble-main">
 	 		<div class="bg-l-purp buble text-center shadow">
 	 			 <div><h4 class="mt-3 col-blk">Today's cases</h4></div>
-	 			 <div><h1 class="attend-font col-blk"><?php echo htmlspecialchars($present_cases) ?></h1></div>
+	 			 <div><h1 class="attend-font col-blk" id="PresentCase">0</h1></div>
 	 			 <div class="view-txt"><a href="today-case.php" class="buble-a col-blk">View</a></div>
 	 		</div>
 	 		<div class="bg-l-purp buble text-center shadow">
@@ -267,7 +263,7 @@ $user = $_SESSION['uname'];
 		 		</tr>
 		 		<tr class="text-center">
 		 			<td colspan="2" rowspan="2">
-		 				<input type="reset" name="reset" class="btn bg-purp col-wh radius">
+		 				<input type="reset" name="reset" class="btn bg-purp col-wh radius" id="resetBtn">
 		 				<input type="submit" name="submit" value="Register" class="btn bg-purp col-wh radius" id="registerUser">
 		 			</td> 
 		 		</tr>
@@ -295,7 +291,7 @@ $user = $_SESSION['uname'];
 	  			<th class="table-head-col">Approve</th>
 	  		</tr>
 	  		</thead>
-	  		<tbody class="tempUser">
+	  		<tbody class="tempUser" id="temp-user">
 	  			<!-- Data is received from response.js getTempData(); function  -->
 		  	</tbody>
 	 	</table>
@@ -330,16 +326,6 @@ $user = $_SESSION['uname'];
 </body>
 
 <script src="script/response.js"></script><!-- Ajax jquery -->
-<script>
-     document.querySelectorAll('.drop').forEach(item => {
-        item.addEventListener('click', function() {
-            // Set the hidden input value to the selected employee's ID
-            const employeeId = this.getAttribute('data-id');
-            document.getElementById('employeeId').value = employeeId;
-            document.getElementById('ename').innerText = employeeId;
-        });
-    });
-</script>
 </html>
 
 <?php

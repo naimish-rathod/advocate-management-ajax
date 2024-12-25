@@ -2,8 +2,10 @@
 <?php
 // this file is used for the select/retrive the information from the database table 
 include 'connection.php';
-$statuss = "pending";   
+$statuss = "pending"; 
+$curdate = date('Y-m-d'); 
 
+//Get temp_user table data
 if(isset($_GET['tempData'])) {
     // Prepare and execute the SQL query
         $tempUser = $conn->prepare("SELECT * FROM `temp_user` WHERE `status` = ?");
@@ -27,6 +29,7 @@ if(isset($_GET['tempData'])) {
     }
 }
 
+//Get all-adv table data
 if(isset($_GET['perData'])) {
     $emp = $conn->prepare("SELECT * FROM `all-adv`");
     $emp->execute();
@@ -46,4 +49,27 @@ if(isset($_GET['perData'])) {
     }
 }
 
+//Get the total number of cases(record in the table)
+if (isset($_GET['total_cases'])) {
+    
+    $stmt = $conn->prepare("SELECT count(`case_id`) AS total_cases FROM `work-data`");
+    $stmt->execute();
+    $stmtRes = $stmt->get_result();
+    $row = $stmtRes->fetch_assoc();
+
+    echo $row['total_cases'];
+
+}
+
+if(isset($_GET['present_cases'])) {
+    $cases=$conn->prepare("SELECT * FROM `work-data` WHERE DATE(`created_at`) = ?");
+    $cases->bind_param("s",$curdate);
+    $cases->execute();
+    $cases->store_result();
+
+    if ($cases->num_rows > 0) {
+        $present_cases = $cases->num_rows;
+    }
+    echo $present_cases;
+}
 ?>
