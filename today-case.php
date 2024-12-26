@@ -1,6 +1,5 @@
-<?php include 'header.php'; ?>
-<!-- ============================== html block start ============================== -->
-<?php
+<?php include 'header.php';  
+
 // Prepare the SQL query to fetch completed cases
 $comp = $conn->prepare("SELECT * FROM `work-data` WHERE DATE(`created_at`) = ?");
 $comp->bind_param("s",$curdate ); //$curdate var is from header.php

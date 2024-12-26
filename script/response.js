@@ -1,7 +1,6 @@
  // this file is use for ajax and jquery code for the make all functionality to without to refresh the page
 //Register form
 $(document).ready(function() {
- 
 	 	//function for submit registration in the database 
 		$('#submitBtn').click(function(event) {
         		event.preventDefault();
@@ -35,7 +34,6 @@ $(document).ready(function() {
 	            }
 	        });
 	    });
-
 	    //For the add user from the admin side (inser record in all-adv table)
 		    $(document).on('click', '#registerUser', function(e){
 		     	 e.preventDefault();
@@ -104,7 +102,6 @@ $(document).ready(function() {
      		});
 
    });
-
     //for approve user
 	     $(document).on('click' , '#approveUser', function(e) {
 	     	e.preventDefault();
@@ -157,7 +154,6 @@ $(document).ready(function() {
 
  			})
  		})
-
      // for retrive data from the temp-user table
 	     function getTempData() {
 	     	$.ajax({
@@ -252,7 +248,88 @@ $(document).ready(function() {
 				},
 				success:function(resp) {
 					$("#PresentCase").text(resp);
-				}
+				},
 			})
 		}
 	present_cases();
+	//Get the today available employee count (Attandance)
+		let set_intetval = setInterval(todayEmp,1000);//Set timeout then the function is call after given time 
+
+		function todayEmp() {
+			$.ajax({
+				type:"GET",
+				url:"fetch.php",
+				data:{
+					today_emp : true,
+				},
+				success:function(resp) {
+					$("#presentEmp").text(resp);
+				},
+			})
+		}
+	//Get user case data
+		function userCase() {
+			$.ajax({
+				type:"GET",
+				url:"fetch.php",
+				data:{
+					user_case : true,
+				},
+				success:function(resp) {
+					$.each(resp, function(key, value) {
+						// console.log(key, value);
+						$("#caseData").append(
+						'<tr>'+
+	                        '<form action="update-work.php" method="post" enctype="multipart/form-data">'+
+	                            '<td class="caseId">'+value['case_id']+'</td>'+
+	                            '<td>'+value['client-name']+'</td>'+
+	                            '<td class="text-start">'+value['case-desc']+'</td>'+
+	                            '<td>'+
+	                                '<label for="optionSelect">'+'Status:'+''+value['status']+ '</label>'+'<br>'+
+	                                '<select id="optionSelect" name="option" class="option-sty opts">'+
+	                                    '<option value="" disabled selected>'+'Select'+'</option>'+
+	                                    '<option value="pending">'+'Pending'+'</option>'+
+	                                    '<option value="done">'+'Done'+'</option>'+
+	                                '</select>'+
+	                            '</td>'+
+	                            '<td>'+
+	                                '<textarea class="form-control cDesc" rows="4" name="case_cls_desc" placeholder="Enter the case expense and close description">'+'</textarea>'+
+	                            '</td>'+
+	                            '<td>'+
+	                                '<input type="file" name="file[]" class="form-control files" multiple>'+
+	                            '</td>'+
+	                            '<td>'+
+	                                '<input type="submit" value="Update" class="btn radius bg-purp col-wh" id="caseUpdate">'+
+	                            '</td>'+
+	                        '</form>'+
+	                    '</tr>'
+							);
+					})
+				},
+
+			})
+		}
+	 	userCase();
+
+	 	$(document).on('click', '#caseUpdate', function() {
+	 		var caseId = $(this).closest('tr').find('.caseId').text();
+	 		var cDesc = $(this).closest('tr').find('.cDesc').val();
+	 		var opts = $(this).closest('tr').find('.opts').val();
+	 		var files = $(this).closest('tr').find('.files').val();
+	 		console.log(files)
+	 	
+	 		$.ajax({
+	 			type:"POST",
+	 			url:"update-work.php",
+	 			data:{
+	 				'case_id':caseId,
+	 				'case_cls_desc':cDesc,
+	 				'status':opts,
+	 				'file':files
+	 			},
+	 			success:function(resp){
+	 				console.log(resp)
+	 			}
+	 		})
+	 	})
+		

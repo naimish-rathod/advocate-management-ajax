@@ -2,6 +2,7 @@
 include 'connection.php';
 extract($_POST);
 
+
 // array for store the path of multiple files 
 $allPath = [];
 
@@ -43,6 +44,6 @@ $stmt->bind_param("sssi", $option, $case_cls_desc, $storeAllPath, $case_id);
 $stmt->execute();
 
 if ($stmt) {
-    header("location: user-index.php");
+    echo "updated";
 } 
 ?>

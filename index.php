@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 			/* =================================
 					variable declaration 
 			====================================*/
-
 	$present_emp = 0;  // Default value if no employees are marked present
 	$curdate = date('Y-m-d'); // for current date
 	$ntfyCountPend = 0;
@@ -14,7 +13,6 @@ error_reporting(E_ALL);
 
 session_start();
 include 'connection.php';
-
 $user = $_SESSION['uname'];
 	if($user){
 
@@ -27,28 +25,16 @@ $user = $_SESSION['uname'];
 	$res = $stmt->get_result();
 	$row = $res->fetch_assoc();
 // employee query
-
 	$emp = $conn->prepare("SELECT * FROM `all-adv`");
 	$emp->execute();
 	$emp_res=$emp->get_result();
-	 
-// query for find attendace 
-	$attend=$conn->prepare("SELECT * FROM `attendance` WHERE DATE(`entry`) = ?");
-	$attend->bind_param("s",$curdate);
-	$attend->execute();
-	$attend->store_result();
-		if($attend->num_rows > 0){
-			$present_emp=$attend->num_rows;
-		}
-
 // query for find total cases include pending and done from all advocate
 	$qryWork = "SELECT * FROM `work-data`";
 	$stmtWork = $conn->prepare($qryWork);
 	$stmtWork->execute();
 	$resWork = $stmtWork->get_result();
 	$workData = $resWork->fetch_all(MYSQLI_ASSOC);
-
-	//query for complated and pending notification  bubble count
+//query for complated and pending notification  bubble count
 	foreach ($workData as $workRow) {
 	    if ($workRow['status'] === 'pending') {
 	        $ntfyCountPend++;
@@ -56,19 +42,6 @@ $user = $_SESSION['uname'];
 	    	$ntfyCountDone++;
 	    }
 	}
-	//total case from work data 
-	$totalCase = $ntfyCountDone + $ntfyCountPend;
-
-//query for find today's case
-	// $cases=$conn->prepare("SELECT * FROM `work-data` WHERE DATE(`created_at`) = ?");
-	// $cases->bind_param("s",$curdate);
-	// $cases->execute();
-	// $cases->store_result();
-
-	// if ($cases->num_rows > 0) {
-    // 	$present_cases = $cases->num_rows;
-	// }
-//query for temp user 
 	$tempUser=$conn->prepare("SELECT * FROM `temp_user` WHERE `status` = ?");
 	$tempUser->bind_param("s", $statuss);
 	$tempUser->execute();
@@ -78,11 +51,9 @@ $user = $_SESSION['uname'];
     	$hasTemp = true;
 	} else {
 	     $hasTemp = false;
-	}
-	
+	}	
 //for work and employee data
-	if ($emp_res ->num_rows > 0) {  //if brace start
-		 
+	if ($emp_res ->num_rows > 0) {  //if brace start	 
 ?>
 <!DOCTYPE html>
 <html>
@@ -93,6 +64,7 @@ $user = $_SESSION['uname'];
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="img/justice.png">
 
   <link rel="stylesheet" type="text/css" href="css/index-style.css">
  </head>
@@ -138,8 +110,7 @@ $user = $_SESSION['uname'];
 	 	<span class="uname me-3"><?php echo htmlspecialchars($row['name']); ?></span>
 	 	<img alt="profile" src="<?php echo htmlspecialchars($row['user_img_src']); ?> " class="user_img me-4">
 	 </nav>
-	 </div>
-	 
+	 </div> 
 	 <!-- ===========================
 				side bar
 	 =============================== -->
@@ -211,7 +182,7 @@ $user = $_SESSION['uname'];
 	 		</div>
 	 		<div class="bg-l-purp buble text-center shadow">
 	 			<div><h4 class="mt-3 col-blk">Available employee</h4></div>
-	 			<div><h1 class="attend-font col-blk"><?php echo htmlspecialchars($present_emp) ?></h1></div>
+	 			<div><h1 class="attend-font col-blk" id="presentEmp">0</h1></div>
 	 			<div class="view-txt"><a href="today-employee.php" class="buble-a  col-blk">View</a></div>
 	 		</div>
 	 	</div>
@@ -270,7 +241,6 @@ $user = $_SESSION['uname'];
 		 	</form>
 	 		</table>
 	 </div>
-
 	  <!-- ==============================
 				pending user
 	 =============================== -->
@@ -296,8 +266,6 @@ $user = $_SESSION['uname'];
 		  	</tbody>
 	 	</table>
 	 </div>
-
-
 	 <!-- ==============================
 				Staff details
 	 =============================== -->
@@ -324,7 +292,6 @@ $user = $_SESSION['uname'];
 	 	</table>
 	 </div>
 </body>
-
 <script src="script/response.js"></script><!-- Ajax jquery -->
 </html>
 

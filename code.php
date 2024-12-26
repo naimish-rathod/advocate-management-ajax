@@ -1,24 +1,16 @@
-
 <?php
 // this file is use for perform operation like delete update and insert using where clause and logic
 include 'connection.php';
-
 $id  = $_POST['tempId'];
 $status = "approved";
-
 // For delete the temparary user
 	if(isset($_POST['check-for-delete'])){
-		
-
-		// echo $id;
 		$stmt = $conn->prepare("DELETE FROM `temp_user` WHERE `id` = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
 	}
-
 //For insert temp user into main advocate data 
 	if(isset($_POST['check-for-per-insert'])){
-
 		$stmt = $conn->prepare("SELECT * FROM `temp_user` WHERE `id` = ?");
 		$stmt->bind_param("i", $id);
 		$stmt->execute();
@@ -39,5 +31,4 @@ $status = "approved";
 			$updateTemp->execute();
 		}
 	}
-
 ?>

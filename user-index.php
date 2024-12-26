@@ -7,7 +7,6 @@ if (!$user) {
     header("location:login.php");
     exit();
 }
-
 // Fetch user details
 $qry = "SELECT * FROM `all-adv` WHERE id = ?";
 $stmt = $conn->prepare($qry);
@@ -17,7 +16,6 @@ if ($stmt) {
     $res = $stmt->get_result();
     $row = $res->fetch_assoc();
 }
-
 // Fetch work data
 $qryWork = "SELECT * FROM `work-data` WHERE id = ?";
 $stmtWork = $conn->prepare($qryWork);
@@ -36,7 +34,6 @@ foreach ($workData as $workRow) {
         $ntfyCountDone++;
     }
 }
-
 // Total cases count
 $totalCase = $ntfyCountDone + $ntfyCountPend;
 
@@ -53,6 +50,8 @@ $hasWorkData = (count($workData) > 0);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index-style.css">
+     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+     <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
    <div class="container-fluid navbar-col shadow-lg">
@@ -103,8 +102,8 @@ $hasWorkData = (count($workData) > 0);
     </div>
     <!-- Work Data -->
     <div class="container mt-5">
-        <?php if ($hasWorkData): ?>
             <table class="table table-striped table-bordered text-center">
+                <thead>
                 <tr>
                     <th class="table-head-col">Case ID</th>
                     <th class="table-head-col">Client Name</th>
@@ -114,36 +113,12 @@ $hasWorkData = (count($workData) > 0);
                     <th class="table-head-col">Document</th>
                     <th class="table-head-col"></th>
                 </tr>
-                <?php foreach ($workData as $rowWork): ?>
-                    <tr>
-                        <form action="update-work.php" method="post" enctype="multipart/form-data">
-                            <td><?php echo htmlspecialchars($rowWork['case_id']); ?></td>
-                            <td><?php echo htmlspecialchars($rowWork['client-name']); ?></td>
-                            <td class="text-start"><?php echo htmlspecialchars($rowWork['case-desc']); ?></td>
-                            <td>
-                                <label for="optionSelect">Status: <?php echo htmlspecialchars($rowWork['status']); ?></label>
-                                <select id="optionSelect" name="option" class="option-sty">
-                                    <option value="pending">Pending</option>
-                                    <option value="done">Done</option>
-                                </select>
-                            </td>
-                            <td>
-                                <textarea class="form-control" rows="4" name="case_cls_desc" placeholder="Enter the case expense and close description"></textarea>
-                            </td>
-                            <td>
-                                <input type="file" name="file[]" class="form-control" multiple>
-                            </td>
-                            <td>
-                                <input type="submit" value="Update" class="btn radius bg-purp col-wh">
-                                <input type="hidden" name="case_id" value="<?php echo htmlspecialchars($rowWork['case_id']); ?>">
-                            </td>
-                        </form>
-                    </tr>
-                <?php endforeach; ?>
+                 </thead>
+                <tbody id="caseData">
+                    Data
+                </tbody>     
             </table>
-        <?php else: ?>
-            <p>No work data available.</p>
-        <?php endif; ?>
     </div>
 </body>
+<script src="script/response.js"></script>
 </html>
