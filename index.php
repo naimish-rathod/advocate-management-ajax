@@ -214,8 +214,13 @@ error_reporting(E_ALL);
 								</td>
 							</tr>
 							<tr>
-								<th>Employee name <span class="txtVal txtVal"></span></th>
-								<td><input type="text" name="name" id="name" class="form-control eNameReg"></td>
+								<th>Employee name </th>
+								<td class="position-relative">
+									<div class="img-msg bg-l-purp txtVal2">
+										<span>*Enter 5 alphabetic character or more</span>
+									</div>
+									<input type="text" name="name" id="name" class="form-control eNameReg">
+								</td>
 							</tr>
 							<tr>
 								<th>Employee password</th>
