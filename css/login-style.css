@@ -125,7 +125,7 @@ h1 em {
    }
 
 .validation:after {
- content: "";
+    content: "";
     height: 12px;
     background-color: #EBDAEF;
     display: block;

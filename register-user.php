@@ -7,7 +7,8 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="css/login-style.css">
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="script/jquery-3.7.1.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
 	<div class="mx-auto tab-body bg-purp" id="regTab">
@@ -15,7 +16,7 @@
 	 			 <h1 class="col-wh">Registration form</h1>
 			</div>
 		<div class="mt-5">
-			<form action="register-emp-user.php" id="registerUser" method="post" enctype="multipart/form-data" onsubmit="showPop(event)">
+			<form  id="registerUser" method="post" enctype="multipart/form-data">
 				<table class="tw">
 						<tr>
 							<td class="col-wh pb-2">Upload your profile&nbsp;<span id="err" class="errElem">Please upload only image file</span> </td>
@@ -114,6 +115,6 @@
 	</div>
 </body>
 <script src="script/validation.js"></script>
-<script src="script/response.js"></script>
+<!-- <script src="script/response.js"></script> -->
 </html>
 

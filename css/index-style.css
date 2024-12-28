@@ -243,6 +243,7 @@ h1 em {
     top: 50%;
     transform: translate(-50%, -50%) scale(1.0);
     visibility: visible;
+    z-index: 9;
 }
 .time-par {
   display: flex;
@@ -253,4 +254,33 @@ h1 em {
   display: unset;
   width: 41%;
 }
-
+.txtVal {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    font-style: italic;
+    position: absolute;
+    display: none;
+}
+.img-msg {
+    position: absolute;
+    font-weight:500;
+    padding: 8px;
+    height: 36px;
+    right: 101px;
+    bottom: 30px;
+    opacity: 0.9;
+    border-radius: 20px;
+    display: none;
+}
+.img-msg:after{
+    content: "";
+    height: 12px;
+    background-color: #EBDAEF;
+    display: block;
+    width: 7px;
+    position: absolute;
+    border-radius: 100%;
+    left: 13px;
+    transform: rotate(56deg);
+}

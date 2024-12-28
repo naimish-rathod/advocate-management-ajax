@@ -2,11 +2,8 @@
 include 'connection.php';
 
 session_start();
-
-
 // Extract POST data
 extract($_POST);
-
 
 // Handle file upload
 $fileName = $_FILES["profile"]["name"];
@@ -22,7 +19,6 @@ if ($_FILES["profile"]["error"] === UPLOAD_ERR_OK) {
     echo "Error uploading file: " . $_FILES["profile"]["error"];
     exit;
 }
-
 // change the format of the time 
 $inTime = DateTime::createFromFormat('H:i', $availableIn);
 $outTime = DateTime::createFromFormat('H:i', $availableOut);
@@ -35,14 +31,5 @@ $available = $inTimeAvl . " To " . $outTimeAvl;
 $stmt = $conn->prepare("INSERT INTO `temp_user`(`pwd`, `name`, `edu`, `exp`, `work`, `available`, `user_img_src`) VALUES (?,?,?,?,?,?,?)");
 $stmt->bind_param("sssssss", $pwd, $name, $edu, $exp, $work, $available, $folder);
 $stmt->execute();
-
-// Check if insertion was successful
-if ($stmt) {
-    $_SESSION['status'] = "success";
-    echo "success";
-} else {
-    echo "Error inserting data.";
-}
-
 ?>
 

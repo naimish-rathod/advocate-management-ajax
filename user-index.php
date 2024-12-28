@@ -8,37 +8,34 @@ if (!$user) {
     exit();
 }
 // Fetch user details
-$qry = "SELECT * FROM `all-adv` WHERE id = ?";
-$stmt = $conn->prepare($qry);
-$stmt->bind_param("i", $user);
-$stmt->execute();
-if ($stmt) {
-    $res = $stmt->get_result();
-    $row = $res->fetch_assoc();
-}
-// Fetch work data
-$qryWork = "SELECT * FROM `work-data` WHERE id = ?";
-$stmtWork = $conn->prepare($qryWork);
-$stmtWork->bind_param("i", $user);
-$stmtWork->execute();
-$resWork = $stmtWork->get_result();
-$workData = $resWork->fetch_all(MYSQLI_ASSOC);
-
-// Calculate notification counts
-$ntfyCountPend = 0;
-$ntfyCountDone = 0;
-foreach ($workData as $workRow) {
-    if ($workRow['status'] === 'pending') {
-        $ntfyCountPend++;
-    } else {
-        $ntfyCountDone++;
+    $qry = "SELECT * FROM `all-adv` WHERE id = ?";
+    $stmt = $conn->prepare($qry);
+    $stmt->bind_param("i", $user);
+    $stmt->execute();
+    if ($stmt) {
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
     }
-}
+// Calculate notification counts
+    $qryWork = "SELECT * FROM `work-data` WHERE id = ?";
+    $stmtWork = $conn->prepare($qryWork);
+    $stmtWork->bind_param("i", $user);
+    $stmtWork->execute();
+    $resWork = $stmtWork->get_result();
+    $workData = $resWork->fetch_all(MYSQLI_ASSOC);
+    $ntfyCountPend = 0;
+    $ntfyCountDone = 0;
+    foreach ($workData as $workRow) {
+        if ($workRow['status'] === 'done') {
+            $ntfyCountDone++;
+        } else{
+            $ntfyCountPend++;
+        }
+    }
 // Total cases count
-$totalCase = $ntfyCountDone + $ntfyCountPend;
-
-// Check if work data exists
-$hasWorkData = (count($workData) > 0);
+    $totalCase = $ntfyCountDone + $ntfyCountPend;
+// Check if work data exists    
+    $hasWorkData = (count($workData) > 0);
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +47,7 @@ $hasWorkData = (count($workData) > 0);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index-style.css">
-     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+     <script src="script/jquery-3.7.1.min.js"></script>
      <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
@@ -74,7 +71,6 @@ $hasWorkData = (count($workData) > 0);
             <img alt="Profile" src="<?php echo htmlspecialchars($row['user_img_src']); ?>" class="user_img me-4">
         </nav>
    </div>
-   
     <!-- Sidebar -->
     <div class="offcanvas offcanvas-start sidebar text-center" id="demo">
         <div class="offcanvas-header">
@@ -115,7 +111,7 @@ $hasWorkData = (count($workData) > 0);
                 </tr>
                  </thead>
                 <tbody id="caseData">
-                    Data
+                    <!-- Data  from response.js -->
                 </tbody>     
             </table>
     </div>

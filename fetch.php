@@ -1,9 +1,10 @@
- 
-<?php
+ <?php
 // this file is used for the select/retrive the information from the database table 
+ session_start();
 include 'connection.php';
 $statuss = "pending"; 
 $curdate = date('Y-m-d'); 
+$user = $_SESSION['user_uname'];
 //Get temp_user table data
     if(isset($_GET['tempData'])) {
         // Prepare and execute the SQL query
@@ -66,8 +67,7 @@ $curdate = date('Y-m-d');
         if ($cases->num_rows >= 0) {
             $present_cases = $cases->num_rows;
             echo $present_cases;
-        }
-        
+        }       
     }
 //Find the count of today available employee
     if(isset($_GET['today_emp'])) {
@@ -83,8 +83,7 @@ $curdate = date('Y-m-d');
             }
     }
 //Featch user work data from the work-data table
-    if (isset($_GET['user_case'])){
-        $user = 1; 
+    if (isset($_GET['user_case'])){ 
         $qryWork = "SELECT * FROM `work-data` WHERE id = ?";
         $stmtWork = $conn->prepare($qryWork);
         $stmtWork->bind_param("i", $user);
@@ -102,6 +101,5 @@ $curdate = date('Y-m-d');
         }else {
             echo json_encode([]);
         }
-        
     }
 ?>

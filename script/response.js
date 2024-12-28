@@ -1,39 +1,6 @@
  // this file is use for ajax and jquery code for the make all functionality to without to refresh the page
 //Register form
 $(document).ready(function() {
-	 	//function for submit registration in the database 
-		$('#submitBtn').click(function(event) {
-        		event.preventDefault();
-		   var formData = new FormData();
-	        formData.append("profile", $(".profile")[0].files[0]);
-	        formData.append("name", $(".name").val());
-	        formData.append("pwd", $(".pwd").val());
-	        formData.append("edu", $(".edu").val());
-	        formData.append("exp", $(".exp").val());
-	        formData.append("work", $(".work").val());
-	        formData.append("availableIn", $(".availableIn").val());
-	        formData.append("availableOut", $(".availableOut").val());
-
-	        // Validate required fields
-	        if (!$(".name").val() || !$(".pwd").val() || !$(".edu").val() || !$(".exp").val() || !$(".work").val() || !$(".availableIn").val() || !$(".availableOut").val()) {
-	            console.log("Missing required fields");
-	            alert( "Please fill in all required fields.");
-	            return;
-	        }
-		 // send data to the php page
-	        $.ajax({
-	            type: "POST",
-	            url: "register-emp-user.php",
-	            data: formData,
-	            contentType: false,  
-	            processData: false,  
-	            success: function() {
-	                showPop();//from validation.js
-	                resetData();//from validation.js
-
-	            }
-	        });
-	    });
 	    //For the add user from the admin side (inser record in all-adv table)
 		    $(document).on('click', '#registerUser', function(e){
 		     	 e.preventDefault();
@@ -58,7 +25,7 @@ $(document).ready(function() {
 		        		console.log(resp);
 		        		$('#temp-user').html("");
 		        		getTempData();
-		        		$('#resetBtn').click();
+		        		$('#resetBtnUser').click();
 		        	}
 		        })
 		
@@ -105,9 +72,7 @@ $(document).ready(function() {
     //for approve user
 	     $(document).on('click' , '#approveUser', function(e) {
 	     	e.preventDefault();
-	     	addUser.append("name", $("#name").val());
-
-	     	var tempId = $(this).closest('tr').find('.tempId').text();
+	  	var tempId = $(this).closest('tr').find('.tempId').text();
 	     	var succPop = $("#app-pop");
 	     	$.ajax({
 	     		type:"POST",
@@ -147,6 +112,7 @@ $(document).ready(function() {
  				contentType: false,
         		processData: false,
  				success:function(resp) {
+ 					console.log(resp);
  					$('#resetBtn').click();
  					totalCases();
  					present_cases();
@@ -287,13 +253,13 @@ $(document).ready(function() {
 	                            '<td>'+
 	                                '<label for="optionSelect">'+'Status:'+''+value['status']+ '</label>'+'<br>'+
 	                                '<select id="optionSelect" name="option" class="option-sty opts">'+
-	                                    '<option value="" disabled selected>'+'Select'+'</option>'+
+	                                    '<option value="pending" disabled selected>'+'Select'+'</option>'+
 	                                    '<option value="pending">'+'Pending'+'</option>'+
 	                                    '<option value="done">'+'Done'+'</option>'+
 	                                '</select>'+
 	                            '</td>'+
 	                            '<td>'+
-	                                '<textarea class="form-control cDesc" rows="4" name="case_cls_desc" placeholder="Enter the case expense and close description">'+'</textarea>'+
+	                                '<textarea class="form-control cDesc" rows="4" name="case_cls_desc" placeholder="Enter the case expense and close description">'+value['case_cls_desc']+'</textarea>'+
 	                            '</td>'+
 	                            '<td>'+
 	                                '<input type="file" name="file[]" class="form-control files" multiple>'+
@@ -309,27 +275,45 @@ $(document).ready(function() {
 
 			})
 		}
-	 	userCase();
+		userCase();
+	//if we want to update record automatically refresh in every 5 sec
+	 	// setRef = setInterval(refTab,5000);
+	 	// function refTab(){
+	 	// 	$('#caseData').html("");
+		// 	    userCase();
+	 	// }
+			$(document).on('click', '#caseUpdate', function(e) {
+			    e.preventDefault(); 
 
-	 	$(document).on('click', '#caseUpdate', function() {
-	 		var caseId = $(this).closest('tr').find('.caseId').text();
-	 		var cDesc = $(this).closest('tr').find('.cDesc').val();
-	 		var opts = $(this).closest('tr').find('.opts').val();
-	 		var files = $(this).closest('tr').find('.files').val();
-	 		console.log(files)
-	 	
-	 		$.ajax({
-	 			type:"POST",
-	 			url:"update-work.php",
-	 			data:{
-	 				'case_id':caseId,
-	 				'case_cls_desc':cDesc,
-	 				'status':opts,
-	 				'file':files
-	 			},
-	 			success:function(resp){
-	 				console.log(resp)
-	 			}
-	 		})
-	 	})
-		
+			    var formData = new FormData(); 
+
+			    // Get data from the form data 
+			    var caseId = $(this).closest('tr').find('.caseId').text();
+			    var cDesc = $(this).closest('tr').find('.cDesc').val();
+			    var opts = $(this).closest('tr').find('.opts').val();
+			    var fileInput = $(this).closest('tr').find('.files')[0];//0 is use for DOM element means it return the that full tag like full input tag
+			    var fileList = fileInput.files; 
+			    console.log(fileInput)
+
+			    // Append data to FormData object to all variable value
+			    formData.append('case_id', caseId);
+			    formData.append('case_cls_desc', cDesc);
+			    formData.append('option', opts);
+
+			    // Append each file to FormData
+			    for (let i = 0; i < fileList.length; i++) {
+			        formData.append('file[]', fileList[i]);
+			         console.log(fileList[i])
+			    }
+			    $.ajax({
+			        type: "POST",
+			        url: "update-work.php",
+			        data: formData,
+			        processData: false,  
+			        contentType: false, 
+			        success: function(resp) {
+			        	$('#caseData').html("");
+			            userCase();
+			        },
+			    });
+			});
