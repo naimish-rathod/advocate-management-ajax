@@ -142,38 +142,40 @@ error_reporting(E_ALL);
 		   					</th>
 		   				</tr>
 		   				<tr>
-		   					<th>Employee ID<br>
-		   						<span class="txtVal"></span>
-		   					</th>
+		   					<th>Employee ID</th>
 		   					<td> 
-		   						<div class="dropdown">
+		   						<div class="dropdown" required>
 		   							<button class="btn bg-purp col-wh radius dropdown-toggle" data-bs-toggle="dropdown" id="ename">Employee list</button>
 		   							<ul class="dropdown-menu dropItem">
 		   								<!-- Result from ajax response.js -->
 		   							</ul>
 		   						</div>
-		   						<input type="hidden" id="employeeId" name="employeeId">
+		   						<input type="hidden" id="employeeId" name="employeeId" class="form-field">
 		   					</td>
 		   				</tr>
 		   				<tr>
 		   					<th>Client name<br>
-		   						<span class="txtVal"></span>
+		   						<span class="txtVal errMsg"></span>
 		   					</th>
 		   					<td class="text-center">
-		   						<input type="text" name="cname" id="cname" class="form-control" placeholder="Enter client name"></td>
+		   						<input type="text" name="cname" id="cname" class="form-control form-field" placeholder="Enter client name" ></td>
 		   				</tr>
 		   				<tr>
-		   					<th>Case type</th>
-		   					<td><input type="text" name="ctype" id="ctype" class="form-control" placeholder="Enter case type"></td>
+		   					<th>Case type<br>
+		   					<span class="txtVal errMsg2"></span>
+		   					</th>
+		   					<td><input type="text" name="ctype" id="ctype" class="form-control form-field" placeholder="Enter case type" ></td>
 		   				</tr>
 		   				<tr>
-		   					<th>Case description</th>
-		   					<td><textarea rows="5" name="cdesc" id="cdesc" class="form-control" placeholder="Case discripton"></textarea></td>
+		   					<th>Case description<br>
+		   						<span class="txtVal errMsg3"></span>
+		   					</th>
+		   					<td><textarea rows="5" name="cdesc" id="cdesc" class="form-control form-field" placeholder="Case discripton" ></textarea></td>
 		   				</tr>
 		   				<tr class="text-center">
 		   					<td colspan="2" rowspan="2">
 		   						<input type="reset" name="reset" class="btn bg-purp col-wh radius" id="resetBtn">
-		   						<input type="submit" name="submit" value="Register" id="registerCase" class="btn bg-purp col-wh radius">
+		   						<input type="submit" name="submit" value="Register" id="registerCase" class="btn bg-purp col-wh radius" disabled>
 		   					</td> 
 		   				</tr>
 		   			</form>
@@ -207,8 +209,8 @@ error_reporting(E_ALL);
 							<tr>
 								<th>Profile picture</th>
 								<td class="position-relative">
-									<div class="img-msg bg-l-purp">
-										<span>Please upload image file(jpg,png,svg)</span>
+									<div class="img-msg bg-l-purp img-show">
+										<span>*Please upload image file(jpg,png,svg)</span>
 									</div>
 									<input type="file" name="profile" id="profile" class="form-control">
 								</td>
@@ -224,15 +226,30 @@ error_reporting(E_ALL);
 							</tr>
 							<tr>
 								<th>Employee password</th>
-								<td><input type="text" name="pwd" id="pwd" class="form-control"></td>
+								<td class="position-relative">
+									<div class="img-msg bg-l-purp pass">
+										<span></span>
+									</div>
+									<input type="text" name="pwd" id="pwd" class="form-control getPass">
+								</td>
 							</tr>
 							<tr>
 								<th>Education</th>
-								<td><input type="text" name="edu" id="edu" class="form-control"></td>
+								<td class="position-relative">
+									<div class="img-msg bg-l-purp edu">
+										<span></span>
+									</div>
+									<input type="text" name="edu" id="edu" class="form-control">
+								</td>
 							</tr>
 							<tr>
 								<th>Experiance</th>
-								<td><input type="text" name="exp" id="exp" class="form-control"></td>
+								<td class="position-relative">
+									<div class="img-msg bg-l-purp exp">
+										<span></span>
+									</div>
+									<input type="text" name="exp" id="exp" class="form-control">
+								</td>
 							</tr>
 							<tr>
 								<th>Work speciality</th>

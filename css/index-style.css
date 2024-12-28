@@ -284,3 +284,9 @@ h1 em {
     left: 13px;
     transform: rotate(56deg);
 }
+.pass {
+    width: 488px;
+    height: 52px;
+    font-size: 13px;
+    bottom: 19px;
+}
