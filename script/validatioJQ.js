@@ -1,11 +1,16 @@
 $(document).ready(function(){
     $(document).on('change', '#cname',function() {
     	var valuee = $('#cname').val();
-    	var classs = $('.txtVal').attr('class');
+    	var classs = '.txtVal';
     	validateString (valuee , classs);
     });
 
-    $(document).on('change', '.eNameReg' , validateString);
+    $(document).on('change', '.eNameReg' , function() {
+    	var valuee = $('.eNameReg').val();
+    	var classs = '.txtVal2';
+    	validateString (valuee , classs);
+    });
+
     $(document).on('change', '#profile', imgValidate);
 
     $(document).on('click', '.dropdown-item', checkEmp);
@@ -13,13 +18,11 @@ $(document).ready(function(){
 
 //Function for validate string
 function validateString (valuee , classs){
-          
-        console.log(valuee);  
-         console.log(classs);
+
 		 if(/^[a-zA-Z\s]+$/.test(valuee.trim()) && valuee.length >=5) {
      		  $(classs).css("display", "none");
      	}else {
-     		$(classs) .val("");
+     		$(this) .val("");
      		$(classs).text('*Enter 5 alphabetic character or more');
      		$(classs).css("display", "unset");
      	}

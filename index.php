@@ -214,7 +214,7 @@ error_reporting(E_ALL);
 								</td>
 							</tr>
 							<tr>
-								<th>Employee name</th>
+								<th>Employee name <span class="txtVal txtVal"></span></th>
 								<td><input type="text" name="name" id="name" class="form-control eNameReg"></td>
 							</tr>
 							<tr>
