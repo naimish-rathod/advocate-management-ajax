@@ -12,8 +12,7 @@ $('#submitBtn').click(function(e) {
 
 	        // Validate required fields
 	        if (!$(".name").val() || !$(".pwd").val() || !$(".edu").val() || !$(".exp").val() || !$(".work").val() || !$(".availableIn").val() || !$(".availableOut").val()) {
-	            console.log("Missing required fields");
-	            alert( "Please fill in all required fields.");
+	            $(".alert").addClass("alert-show");
 	            return;
 	        }
 		 // send data to the php page
@@ -30,6 +29,11 @@ $('#submitBtn').click(function(e) {
 	            }
 	        });
 	    });
+	//For close alert button
+		 		$(document).on('click', '#close-alert', function(){
+		 			$(".alert").removeClass("alert-show");
+		 		});
+
  	function imgValidate( ) {
 		 let img = document.getElementById("img");
 		 let errMsg = document.getElementById("errMsg");
@@ -39,9 +43,11 @@ $('#submitBtn').click(function(e) {
 		 let ext = fname.substr(dot,fname.length).toLowerCase();
 		 
 		 if(ext=="jpg" || ext=="png" || ext=="jpeg") {
-
+		 	err.style.display = "none";
 		 }else {
 		 	 img.value="";
+		 	 $(".alert").addClass("alert-show");
+		 	 $('.alert-txt').text(ext+" File is not accepted");
 		 	 err.style.display = "unset";
 		 }
 	}
@@ -55,6 +61,8 @@ $('#submitBtn').click(function(e) {
      	}else {
      		txt.value="";
      		errMsg.style.display = "unset";
+     		$(".alert").addClass("alert-show");
+		 	$('.alert-txt').text("Enter alphabets only");
      	}
 	}
 	function intValidate() {
@@ -66,6 +74,8 @@ $('#submitBtn').click(function(e) {
 		if(checkInt === false) {
 			txt.value = "";
 			errMsg.style.display= "unset";
+			$(".alert").addClass("alert-show");
+		 	$('.alert-txt').text("Do not enter alphabets");
 		} else {
 			errMsg.style.display= "none";
 		}
@@ -141,8 +151,7 @@ $('#submitBtn').click(function(e) {
 		    		submitBtn.disabled = true;
 				}
 
-	};
-	    	 
+	}; 
 
 	// for show and hide the validation div 
 		var valBox = document.querySelector("#valBox");

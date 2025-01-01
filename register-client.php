@@ -4,8 +4,8 @@ include 'connection.php';
 
 extract($_POST);
  
-$stmt = $conn->prepare("INSERT INTO `work-data`(`id`, `client-name`, `case-type`, `case-desc`) VALUES(?, ?, ?, ?)");
-$stmt->bind_param("isss",$employeeId, $cname, $ctype, $cdesc);
+$stmt = $conn->prepare("INSERT INTO `work-data`(`id`, `client-name`, `case-type`, `case-desc` ,`email`, `contact`) VALUES(?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("issssi",$employeeId, $cname, $ctype, $cdesc, $ceml, $ccont);
 $stmt->execute();
 
 echo $cname;

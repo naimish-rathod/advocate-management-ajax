@@ -60,6 +60,7 @@ $hasWorkData = (count($workData) > 0);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index-style.css">
+    <script src="script/jquery-3.7.1.min.js"></script>
      <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
@@ -74,16 +75,17 @@ $hasWorkData = (count($workData) > 0);
                 <li class="nav-item ms-4">
                     <a href="index.php" class="nav-link fs-5">Home</a>
                 </li>
-                <li class="nav-item">
-                    <li  class="nav-item">
-                     <a href="cases.php" class="nav-link fs-5">Cases</a>
-                </li>
+               <li class="nav-item">
+                    <a href="employee.php" class="nav-link fs-5">Employee</a>
                 </li>
                 <li class="nav-item">
-                    <a href="complate-case.php" class="nav-link fs-5">Completed<span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone); ?></span></a>
+                    <a href="approve-emp.php" class="nav-link fs-5">Approve employee</a>
                 </li>
                 <li class="nav-item">
-                    <a href="pending-case.php" class="nav-link fs-5">Pending<span class="ntfy"><?php echo htmlspecialchars($ntfyCountPend); ?></span></a>
+                    <a href="register-new-emp.php" class="nav-link fs-5">Register Employee</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cases.php" class="nav-link fs-5">Cases</a>
                 </li>
             </ul>
         </div>
@@ -95,17 +97,27 @@ $hasWorkData = (count($workData) > 0);
 
     <!-- Sidebar -->
      <div class="offcanvas offcanvas-start sidebar text-center" id="demo">
-        <div class="offcanvas-header">
-            <h3 class="offcanvas-title col-wh">Dashboard</h3>
-            <!-- <button class="btn btn-close text-reset" data-bs-dismiss="offcanvas"></button> --> <img src="img/close.png"  class="text-reset close" data-bs-dismiss="offcanvas" >
-        </div>
-        <div class="offcanvas-body mt-2">
-                <hr class="col-wh">
-            <p class="dash-font"><a class="logout-txt dash-font" href="admin-doc.php">Documents</a></p>
-                <hr class="col-wh">
-            <p class="dash-font ">Total case <span class="badge rounded-pill b-ntfy"> <?php echo htmlspecialchars($totalCase) ?></span></p>
-                <hr class="col-wh">
-            <p class="dash-font"><a class="logout-txt" href="Logout.php">Logout</a></p>
-                <hr class="col-wh">
-        </div>
-     </div>
+                    <div class="offcanvas-header">
+                        <h3 class="offcanvas-title col-wh">Dashboard</h3>
+                        <img src="img/close.png"  class="text-reset close" data-bs-dismiss="offcanvas" >
+                    </div>
+                    <div class="offcanvas-body mt-2">
+                            <hr class="col-wh">
+                        <p class="dash-font"><a class="logout-txt dash-font" href="admin-doc.php">Documents</a></p>
+                            <hr class="col-wh">
+                        <p class="dash-font ">Total case <span class="ntfy" id="totalCasePill"></span></p>
+                            <hr class="col-wh">
+                        <p class="dash-font">
+                            <a href="complate-case.php" class="nav-link fs-5 dash-font">Complated<span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone) ?></span></a>
+                        </p>
+                        <hr class="col-wh">
+                        <p class="dash-font">
+                            <a href="pending-case.php" class="nav-link fs-5 dash-font">Pending<span class="ntfy"><?php echo htmlspecialchars($ntfyCountPend) ?></span></a>
+                        </p>
+                            <hr class="col-wh">
+                        <p class="dash-font">
+                            <a class="logout-txt" href="Logout.php">Logout</a>
+                        </p>
+                        <hr class="col-wh">
+                    </div>
+                </div>

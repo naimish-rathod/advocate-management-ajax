@@ -177,3 +177,29 @@ h1 em {
   filter: blur(5px); 
   pointer-events: none; 
 }
+.alert {
+        width: 430px;
+    margin: 0 auto;
+    position: fixed;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, -88%)scale(0.1);
+    z-index: 9;
+    visibility: hidden;
+    transition: transform 0.3s, top 0.3s;
+}
+.alert-show {
+    top: 23%;
+    transform: translate(-50%, -50%) scale(1.0);
+    visibility: visible;
+}
+.alert-txt {
+    font-size: large;
+    font-weight: 600;‰
+}
+.alert-head{
+    border-radius: 6px 6px 0 0;
+}
+.alert-body {
+    border-radius: 0 0 6px 6px;
+}

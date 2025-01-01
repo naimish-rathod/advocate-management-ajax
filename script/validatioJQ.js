@@ -1,68 +1,44 @@
 $(document).ready(function() {
     //For validate the value of the client name
-    $(document).on('keyup', '#cname', function() {
+    $(document).on('keyup change', '#cname', function() {
         var valuee = $('#cname').val();
         var classs = '.errMsg';
         validateString(valuee, classs);
     });
 
     //For validate and pass the value of the employee name
-    $(document).on('keyup', '.eNameReg', function() {
+    $(document).on('keyup change', '.eNameReg', function() {
         var valuee = $('.eNameReg').val();
         var classs = '.txtVal2';
         validateString(valuee, classs);
     });
     //For case type 
-    $(document).on('keyup', '#ctype', function() {
+    $(document).on('keyup change', '#ctype', function() {
         var valuee = $('#ctype').val();
         var classs = '.errMsg2'
         validateString(valuee, classs);
     })
     //For case description
-    $(document).on('keyup', '#cdesc', function() {
+    $(document).on('keyup change', '#cdesc', function() {
         var valuee = $('#cdesc').val();
         var classs = '.errMsg3'
         validateString(valuee, classs);
     })
-    //For check enployee is select or not
-    $(document).on('click', '.dropdown-item', function() {
-        const id = $(this).data('id');
-        $('#employeeId').val(id);
-        checkFormFields();
-    });
     //For the validate education string
-    $(document).on('change', '#edu', function() {
+    $(document).on('change change', '#edu', function() {
         var valuee = $('#edu').val();
         var classs = '.edu';
         validateString(valuee, classs);
     });
-    // Check the form fields on keyup and change
-    $('.form-field').on('keyup change', function() {
-        checkFormFields();
-    });
-
-    function checkFormFields() {
-        let allFilled = true;
-
-
-        $('.form-field').each(function() {
-            if ($(this).val().trim() === "") {
-                allFilled = false;
-                validateString();
-            }
-        });
-        if (allFilled && checkErr && checkErr2 && checkErr3) {
-            $('#registerCase').prop('disabled', false);
-        } else {
-            $('#registerCase').prop('disabled', true);
-        }
-    }
-
 
     //For validate the experiance
     $(document).on('change', '#exp', numValidate);
     //For validate the password 
-    $(document).on('keyup', '.getPass', passValidate);
+    $(document).on('keyup change', '.getPass', function() {
+        var valuee = $('.getPass').val();
+        var classs = '.pass'
+        validateString(valuee, classs);
+    })
     //For validate the image  
     $(document).on('change', '#profile', imgValidate);
 
@@ -71,29 +47,31 @@ $(document).ready(function() {
 //Function for validate string
 function validateString(valuee, classs) {
 
-	let checkErr = false;
-	let checkErr2 = false;
-	let checkErr3 = false;
-
     if (/^[a-zA-Z\s]+$/.test(valuee.trim()) && valuee.length >= 5) {
         $(classs).css("display", "none");
-        let checkErr = false;
+         $('#registerCase').prop('disabled', false);
+         $('#registerUser').prop('disabled', false);
     } else {
         $(this).val("");
         $(classs).text('*Enter 5 alphabetic character or more');
         $(classs).css("display", "unset");
-        let checkErr = true;
+        $('#registerCase').prop('disabled', true);
+        $('#registerUser').prop('disabled', true);
     }
     //For length 3
     if (classs == ".edu" || classs == ".errMsg2") {
         if (/^[a-zA-Z\s]+$/.test(valuee.trim()) && valuee.length >= 3) {
             $(classs).css("display", "none");
-            let checkErr2 = false;
+             $('#registerCase').prop('disabled', false);
+         	 $('#registerUser').prop('disabled', false);
+
         } else {
             $(this).val("");
             $(classs).text('*Enter 3 alphabetic character or more');
             $(classs).css("display", "unset");
-            let checkErr = true;
+            $('#registerCase').prop('disabled', true);
+            $('#registerUser').prop('disabled', true);
+
         }
     }
     //For length 15
@@ -101,12 +79,36 @@ function validateString(valuee, classs) {
         if (/^[a-zA-Z\s]+$/.test(valuee.trim()) && valuee.length >= 15) {
             $(classs).css("display", "none");
             let checkErr3 = false;
+             $('#registerCase').prop('disabled', false);
+        	 $('#registerUser').prop('disabled', false);
+
         } else {
             $(this).val("");
             $(classs).text('*Enter 15 alphabetic character or more');
             $(classs).css("display", "unset");
             let checkErr = true;
+            $('#registerCase').prop('disabled', true);
+      	    $('#registerUser').prop('disabled', true);
+
         }
+    }
+    //Validate password
+    if(classs == ".pass"){
+	    	
+	    console.log(valuee);
+	    // Regular expression for password validation
+	    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/;
+
+	    if (valuee.match(regex)) {
+	        // If password is valid, hide the error message
+	        $(classs).css("display", "none");
+	        $('#registerUser').prop('disabled', false);
+	    } else {
+	        // If password is invalid, show the error message
+	        $(classs).text('Password must be at least 8 characters, including uppercase, lowercase, number, and special character.')
+	            .css("display", "unset");
+	            $('#registerUser').prop('disabled', true);
+	    }
     }
 
 }
@@ -139,18 +141,20 @@ function numValidate() {
     }
 }
 
-function passValidate() {
-    var val = $(this).val();
-    console.log(val);
-    // Regular expression for password validation
-    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/;
+// function passValidate() {
+//     var val = $(this).val();
+//     console.log(val);
+//     // Regular expression for password validation
+//     var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$/;
 
-    if (val.match(regex)) {
-        // If password is valid, hide the error message
-        $('.pass').css("display", "none");
-    } else {
-        // If password is invalid, show the error message
-        $('.pass').text('Password must be at least 8 characters, including uppercase, lowercase, number, and special character.')
-            .css("display", "unset");
-    }
-}
+//     if (val.match(regex)) {
+//         // If password is valid, hide the error message
+//         $('.pass').css("display", "none");
+//         $('#registerUser').prop('disabled', false);
+//     } else {
+//         // If password is invalid, show the error message
+//         $('.pass').text('Password must be at least 8 characters, including uppercase, lowercase, number, and special character.')
+//             .css("display", "unset");
+//             $('#registerUser').prop('disabled', true);
+//     }
+// }

@@ -1,6 +1,6 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php';
 
-<?php
+
 // Get month value from GET request
 if (isset($_GET['month'])) {
     $month = $_GET['month'];
@@ -95,11 +95,12 @@ if ($caseRes->num_rows > 0) {
                 <?php } ?>
             <?php } else { ?>
                 <tr>
-                    <td colspan="8" class="text-center">No cases registered for this month</td>
+                    <td colspan="10" class="text-center">No cases registered for this month</td>
                 </tr>
             <?php } ?>
         </tbody>
     </table>
 </div>
 </body>
+<script src="script/response.js"></script><!-- Ajax jquery -->
 </html>

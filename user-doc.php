@@ -112,6 +112,8 @@ $hasWorkData = (count($workData) > 0);
             <tr class="text-center">
                 <th class="table-head-col">Case ID</th>
                 <th class="table-head-col">Client Name</th>
+                <th class="table-head-col">Client email</th>
+                <th class="table-head-col">Client contact</th>
                 <th class="table-head-col">Files</th>
             </tr>
 
@@ -121,6 +123,8 @@ $hasWorkData = (count($workData) > 0);
                     <tr class="text-valign text-center">
                         <td><?php echo htmlspecialchars($rowWork['case_id']); ?></td>
                         <td><?php echo htmlspecialchars($rowWork['client-name']); ?></td>
+                        <td><?php echo htmlspecialchars($rowWork['email']); ?></td>
+                        <td><?php echo htmlspecialchars($rowWork['contact']); ?></td>
                         <td class="text-start">
                             <?php foreach ($filePath as $file): ?>
                                 <?php if ($file): 

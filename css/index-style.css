@@ -62,8 +62,14 @@ body{
 .btn-etr {
 	background: #5FABFF;
 }
+.btn-etr:hover{
+    background: white;
+}
 .btn-cls {
 	background: #FF6E6E;
+}
+.btn-cls:hover {
+    background: white;
 }
 .attend-font{
 	font-size: 70px;
@@ -79,8 +85,8 @@ body{
 }
 .ntfy {
     font-size: 13px;
-    background: #352741;
-    color: white;
+    background: #EBDAEF;
+    color: black;
     border-radius: 50%;
     display: inline-block;
     text-align: center;
@@ -175,6 +181,9 @@ h1 em {
     font-size: 21px;
     color: #FFE4FC;
 }
+.dash-font:hover a{
+    color: #d183c8;
+}
 .close {
     width: 22px;
     height: 22px;
@@ -219,6 +228,7 @@ h1 em {
     right: 0;
     transform: translateX(100%);
     visibility: hidden; 
+    z-index: 9;
 }
 @keyframes moveright {
     100% {
@@ -289,4 +299,50 @@ h1 em {
     height: 52px;
     font-size: 13px;
     bottom: 19px;
+}
+.alert {
+    width: 430px;
+    margin: 0 auto;
+    position: fixed;
+    left: 50%;
+    top: 0%;
+    transform: translate(-50%, -88%)scale(0.1);
+    z-index: 9;
+    visibility: hidden;
+    transition: transform 0.3s, top 0.3s;
+}
+.alert-show {
+    top: 23%;
+    transform: translate(-50%, -50%) scale(1.0);
+    visibility: visible;
+}
+.alert-txt {
+    font-size: large;
+    font-weight: 600;‰
+}
+.alert-head{
+    border-radius: 6px 6px 0 0;
+}
+.alert-body {
+    border-radius: 0 0 6px 6px;
+}
+.tool {
+    font-size: 12px;
+    position: absolute;
+    bottom: -11%;
+    padding: 5px;
+    border-radius: 3px;
+    left: 2%;
+    visibility: hidden;
+}
+.nav-link:hover .tool {
+    visibility: visible;
+}
+.tool2 {
+    left: 19%;
+}
+.filetxt {
+    padding-top:10px ;
+    font-style: italic;
+    display: block;
 }

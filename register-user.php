@@ -11,6 +11,18 @@
     <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
+	<!-- alert box -->
+				<div class="card alert">
+					<div class="card-header bg-l-purp text-center alert-head">Alert</div>
+					<div class="card-body bg-l-purp">
+						<div class="text-center alert-body">
+							<span class="alert-txt">Please fill required fields.</span>
+						</div>
+						<div class="float-end">
+							<button class="btn bg-purp" id="close-alert"><span class="col-wh">OK</span></button>
+						</div>
+					</div>
+				</div>
 	<div class="mx-auto tab-body bg-purp" id="regTab">
 			<div class="one">
 	 			 <h1 class="col-wh">Registration form</h1>
@@ -19,7 +31,7 @@
 			<form  id="registerUser" method="post" enctype="multipart/form-data">
 				<table class="tw">
 						<tr>
-							<td class="col-wh pb-2">Upload your profile&nbsp;<span id="err" class="errElem">Please upload only image file</span> </td>
+							<td class="col-wh pb-2">Upload your profile&nbsp;<span id="err" class="errElem">Please upload only jpg,png,jpeg file</span> </td>
 						</tr>
 						<tr>
 							<td><input type="file" name="profile" class="form-control mb-4 profile" required onchange="imgValidate(event)" id="img"></td>
@@ -107,7 +119,7 @@
 			<img src="img/check-3.gif">
 		</div>
 		<div class="pop-body">
-			<p>Your application is submitted we inform you if you are eligible.</p>
+			<p>Your application is submitted we inform you in 24 hours</p>
 		</div>
 		<div class="pop-footer">
 			<a href="login.php" class="btn col-wh bg-purp radius">Ok</a>

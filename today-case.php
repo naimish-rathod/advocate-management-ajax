@@ -23,6 +23,8 @@ if ($compRes->num_rows > 0) {
                 <th class="table-head-col">Case ID</th>
                 <th class="table-head-col">Employee ID</th>
                 <th class="table-head-col">Client Name</th>
+                <th class="table-head-col">Client email</th>
+                <th class="table-head-col">Client contact</th>
                 <th class="table-head-col">Case Type</th>
                 <th class="table-head-col">Case Description</th>
                 <th class="table-head-col">Status</th>
@@ -36,7 +38,9 @@ if ($compRes->num_rows > 0) {
                     <tr>
                         <td><?php echo htmlspecialchars($row['case_id']); ?></td>
                         <td><?php echo htmlspecialchars($row['id']); ?></td>
-                        <td><?php echo htmlspecialchars($row['client-name']); ?></td>
+                         <td><?php echo htmlspecialchars($row['client-name']); ?></td>
+                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                        <td><?php echo htmlspecialchars($row['contact']); ?></td>
                         <td><?php echo htmlspecialchars($row['case-type']); ?></td>
                         <td><?php echo htmlspecialchars($row['case-desc']); ?></td>
                         <td><?php echo htmlspecialchars($row['status']); ?></td>
@@ -46,7 +50,7 @@ if ($compRes->num_rows > 0) {
                 <?php } ?>
             <?php } else { ?>
                 <tr>
-                    <td colspan="8" class="text-center">No cases registered today</td>
+                    <td colspan="10" class="text-center">No cases registered today</td>
                 </tr>
             <?php } ?>
         </tbody>

@@ -51,6 +51,18 @@ if (!$user) {
      <link rel="icon" type="image/x-icon" href="img/justice.png">
 </head>
 <body>
+<!-- alert box -->
+                <div class="card alert">
+                    <div class="card-header bg-l-purp text-center alert-head">Alert</div>
+                    <div class="card-body bg-l-purp alert-body">
+                        <div class="text-center">
+                            <span class="alert-txt">Please fill required fields.</span>
+                        </div>
+                        <div class="float-end">
+                            <button class="btn bg-purp" id="close-alert"><span class="col-wh">OK</span></button>
+                        </div>
+                    </div>
+                </div>
    <div class="container-fluid navbar-col shadow-lg">
         <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-sm navbar-col container">
@@ -60,10 +72,10 @@ if (!$user) {
                         <img src="img/munu.png" class="menu-img" data-bs-toggle="offcanvas" data-bs-target="#demo">
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link fs-5">Completed <span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone); ?></span></a>
+                        <a href="#" class="nav-link fs-5">Completed<span class="tool bg-l-purp col-blk">Total completed case</span> <span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone); ?></span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link fs-5">Pending <span class="ntfy"><?php echo htmlspecialchars($ntfyCountPend); ?></span></a>
+                        <a href="#" class="nav-link fs-5">Pending <span class="tool tool2 bg-l-purp col-blk">Total pending case</span><span class="ntfy"><?php echo htmlspecialchars($ntfyCountPend); ?></span></a>
                     </li>
                 </ul>
             </div>
@@ -103,6 +115,8 @@ if (!$user) {
                 <tr>
                     <th class="table-head-col">Case ID</th>
                     <th class="table-head-col">Client Name</th>
+                    <th class="table-head-col">Client email</th>
+                    <th class="table-head-col">Client contact</th>
                     <th class="table-head-col">Case Description</th>
                     <th class="table-head-col">Status</th>
                     <th class="table-head-col">Case Close Description</th>

@@ -65,22 +65,33 @@ error_reporting(E_ALL);
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 			<script src="script/jquery-3.7.1.min.js"></script>	
 			<link rel="icon" type="image/x-icon" href="img/justice.png">
-
 			<link rel="stylesheet" type="text/css" href="css/index-style.css">
 		</head>
 		<body>
 			<!-- confirm box -->
-			<div class="card text-center confirm-box bg-l-purp">
-				<div class="card-header">Are you sure to reject ?</div>
-				<div class="card-body d-flex justify-content-around">
-					<button class="btn bg-purp col-wh" id="confirmDel">Yes</button>  
-					<button class="btn bg-purp col-wh" id="closeConfirm">No</button>
+				<div class="card text-center confirm-box bg-l-purp">
+					<div class="card-header">Are you sure to reject ?</div>
+					<div class="card-body d-flex justify-content-around">
+						<button class="btn bg-purp col-wh" id="confirmDel">Yes</button>  
+						<button class="btn bg-purp col-wh" id="closeConfirm">No</button>
+					</div>
 				</div>
-			</div>
 			<!-- slide (toast) notification -->
-			<div class="approve-pop" id="app-pop">
-				<img src="img/accept-icon.svg"> <span> Approved successfully</span>
-			</div>
+				<div class="approve-pop" id="app-pop">
+					<img src="img/accept-icon.svg"> <span> Approved successfully</span>
+				</div>
+			<!-- alert box -->
+				<div class="card alert">
+					<div class="card-header bg-l-purp text-center alert-head">Alert</div>
+					<div class="card-body bg-l-purp alert-body">
+						<div class="text-center">
+							<span class="alert-txt">Please fill required fields.</span>
+						</div>
+						<div class="float-end">
+							<button class="btn bg-purp" id="close-alert"><span class="col-wh">OK</span></button>
+						</div>
+					</div>
+				</div>
 	<!-- ===========================
 					navigation bar
 	=============================== -->
@@ -94,16 +105,16 @@ error_reporting(E_ALL);
 								</li>
 								<!-- side bar image -->
 								<li class="nav-item ms-4">
-									<a href="#emp" class="nav-link fs-5">Employee</a>
+									<a href="employee.php" class="nav-link fs-5">Employee</a>
+								</li>
+								<li class="nav-item">
+									<a href="approve-emp.php" class="nav-link fs-5">Approve employee</a>
+								</li>
+								<li class="nav-item">
+									<a href="register-new-emp.php" class="nav-link fs-5">Register Employee</a>
 								</li>
 								<li  class="nav-item">
 									<a href="cases.php" class="nav-link fs-5">Cases</a>
-								</li>
-								<li class="nav-item">
-									<a href="complate-case.php" class="nav-link fs-5">Complated<span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone) ?></span></a>
-								</li>
-								<li class="nav-item">
-									<a href="pending-case.php" class="nav-link fs-5">Pending<span class="	ntfy"><?php echo htmlspecialchars($ntfyCountPend) ?></span></a>
 								</li>
 							</ul>
 						</div>
@@ -120,12 +131,22 @@ error_reporting(E_ALL);
 						<img src="img/close.png"  class="text-reset close" data-bs-dismiss="offcanvas" >
 					</div>
 					<div class="offcanvas-body mt-2">
-						<hr class="col-wh">
+							<hr class="col-wh">
 						<p class="dash-font"><a class="logout-txt dash-font" href="admin-doc.php">Documents</a></p>
+							<hr class="col-wh">
+						<p class="dash-font ">Total case <span class="ntfy" id="totalCasePill"></span></p>
+							<hr class="col-wh">
+						<p class="dash-font">
+						    <a href="complate-case.php" class="nav-link fs-5 dash-font">Complated<span class="ntfy"><?php echo htmlspecialchars($ntfyCountDone) ?></span></a>
+						</p>
 						<hr class="col-wh">
-						<p class="dash-font ">Total case <span class="badge rounded-pill b-ntfy" id="totalCasePill"></span></p>
-						<hr class="col-wh">
-						<p class="dash-font"><a class="logout-txt" href="Logout.php">Logout</a></p>
+						<p class="dash-font">
+							<a href="pending-case.php" class="nav-link fs-5 dash-font">Pending<span class="ntfy"><?php echo htmlspecialchars($ntfyCountPend) ?></span></a>
+						</p>
+							<hr class="col-wh">
+						<p class="dash-font">
+							<a class="logout-txt" href="Logout.php">Logout</a>
+						</p>
 						<hr class="col-wh">
 					</div>
 				</div>
@@ -133,18 +154,19 @@ error_reporting(E_ALL);
 		   	Register a new  case
 	 =============================== -->
 		   <div class="row container-lg mx-auto mt-5">
+		   	 
 		   	<div class="col-sm-8 mt-3"> 
 		   		<table class="table table-bordered text table-striped">
-		   			<form class="form" method="get">
+		   			<form class="form case-form" method="get">
 		   				<tr >
 		   					<th colspan="2" class="table-head-col ">
 		   						<h4 class="text-center marg" >Register a new  case</h4>
 		   					</th>
 		   				</tr>
 		   				<tr>
-		   					<th>Employee ID</th>
+		   					<th>Employee ID *</th>
 		   					<td> 
-		   						<div class="dropdown" required>
+		   						<div class="dropdown">
 		   							<button class="btn bg-purp col-wh radius dropdown-toggle" data-bs-toggle="dropdown" id="ename">Employee list</button>
 		   							<ul class="dropdown-menu dropItem">
 		   								<!-- Result from ajax response.js -->
@@ -154,20 +176,36 @@ error_reporting(E_ALL);
 		   					</td>
 		   				</tr>
 		   				<tr>
-		   					<th>Client name<br>
+		   					<th>Client name *<br>
 		   						<span class="txtVal errMsg"></span>
 		   					</th>
 		   					<td class="text-center">
 		   						<input type="text" name="cname" id="cname" class="form-control form-field" placeholder="Enter client name" ></td>
 		   				</tr>
 		   				<tr>
-		   					<th>Case type<br>
+		   					<th>Case type *<br>
 		   					<span class="txtVal errMsg2"></span>
 		   					</th>
 		   					<td><input type="text" name="ctype" id="ctype" class="form-control form-field" placeholder="Enter case type" ></td>
 		   				</tr>
 		   				<tr>
-		   					<th>Case description<br>
+		   					<th>Client email *<br>
+		   						<span class="txtVal errMsg5"></span>
+		   					</th>
+		   					<td class="text-center">
+		   						<input type="email" name="email" id="cemail" class="form-control form-field" placeholder="Enter client email" >
+		   					</td>
+		   				</tr>
+		   				<tr>
+		   					<th>Client contact no. *<br>
+		   						<span class="txtVal errMsg4"></span>
+		   					</th>
+		   					<td class="text-center">
+		   						<input type="text" name="cont" id="ccont" class="form-control form-field" placeholder="Enter client contact no." >
+		   					</td>
+		   				</tr>
+		   				<tr>
+		   					<th>Case description *<br>
 		   						<span class="txtVal errMsg3"></span>
 		   					</th>
 		   					<td><textarea rows="5" name="cdesc" id="cdesc" class="form-control form-field" placeholder="Case discripton" ></textarea></td>
@@ -175,7 +213,7 @@ error_reporting(E_ALL);
 		   				<tr class="text-center">
 		   					<td colspan="2" rowspan="2">
 		   						<input type="reset" name="reset" class="btn bg-purp col-wh radius" id="resetBtn">
-		   						<input type="submit" name="submit" value="Register" id="registerCase" class="btn bg-purp col-wh radius" disabled>
+		   						<input type="submit" name="submit" value="Register" id="registerCase" class="btn bg-purp col-wh radius" >
 		   					</td> 
 		   				</tr>
 		   			</form>
@@ -200,7 +238,7 @@ error_reporting(E_ALL);
 	 =============================== -->
 				<div class="container mt-4">
 					<table class="table table-bordered text-center table-striped">
-						<form class="form" action="register-emp-admin.php" method="post" enctype="multipart/form-data">
+						<form class="form emp-form" action="register-emp-admin.php" method="post" enctype="multipart/form-data">
 							<tr >
 								<th colspan="2" class="table-head-col ">
 									<h4 class="text-center marg" >Register a new employee</h4>
@@ -221,7 +259,7 @@ error_reporting(E_ALL);
 									<div class="img-msg bg-l-purp txtVal2">
 										<span>*Enter 5 alphabetic character or more</span>
 									</div>
-									<input type="text" name="name" id="name" class="form-control eNameReg">
+									<input type="text" name="name" id="name" class="form-control emp-field eNameReg">
 								</td>
 							</tr>
 							<tr>
@@ -230,7 +268,7 @@ error_reporting(E_ALL);
 									<div class="img-msg bg-l-purp pass">
 										<span></span>
 									</div>
-									<input type="text" name="pwd" id="pwd" class="form-control getPass">
+									<input type="text" name="pwd" id="pwd" class="form-control emp-field getPass">
 								</td>
 							</tr>
 							<tr>
@@ -239,7 +277,7 @@ error_reporting(E_ALL);
 									<div class="img-msg bg-l-purp edu">
 										<span></span>
 									</div>
-									<input type="text" name="edu" id="edu" class="form-control">
+									<input type="text" name="edu" id="edu" class="form-control emp-field">
 								</td>
 							</tr>
 							<tr>
@@ -248,12 +286,17 @@ error_reporting(E_ALL);
 									<div class="img-msg bg-l-purp exp">
 										<span></span>
 									</div>
-									<input type="text" name="exp" id="exp" class="form-control">
+									<input type="text" name="exp" id="exp" class="form-control emp-field">
 								</td>
 							</tr>
 							<tr>
 								<th>Work speciality</th>
-								<td><input type="text" name="work" id="work" class="form-control"></td>
+								<td class="position-relative">
+									<div class="img-msg bg-l-purp work">
+										<span></span>
+									</div>
+									<input type="text" name="work" id="work" class="form-control emp-field">
+								</td>
 							</tr>
 							<tr>
 								<th>Available</th>
@@ -323,7 +366,8 @@ error_reporting(E_ALL);
 				</div>
 			</body>
 			<script src="script/response.js"></script><!-- Ajax jquery -->
-			<script src="script/validatioJQ.js"></script>
+			<!-- <script src="script/validatioJQ.js"></script> -->
+			<script src="script/validationJQ2.js"></script>
 			</html>
 
 			<?php

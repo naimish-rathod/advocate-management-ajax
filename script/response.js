@@ -15,6 +15,10 @@ $(document).ready(function() {
 		        addUser.append("availableIn", $("#availableIn").val());
 		        addUser.append("availableOut", $("#availableOut").val());
 
+		        if(!$("#profile")[0].files[0] || !$("#name").val() || !$("#pwd").val() || !$("#edu").val() || !$("#exp").val() || !$("#work").val() || !$("#availableIn").val() || !$("#availableOut").val()){
+		        	 $(".alert").addClass("alert-show");
+		        	 return;
+		        }
 		        $.ajax({
 		        	type:"POST",
 		        	url:"register-emp-user.php",
@@ -31,6 +35,10 @@ $(document).ready(function() {
 		
 		     });
 });
+		//For close alert button
+	 		$(document).on('click', '#close-alert', function(){
+	 			$(".alert").removeClass("alert-show");
+	 		});
 
     // for temp user
 	var confirmBox =  $(".confirm-box");
@@ -104,7 +112,14 @@ $(document).ready(function() {
  			 newCase.append("employeeId", $("#employeeId").val());//From hidden input
  			 newCase.append("cname", $("#cname").val());
  			 newCase.append("ctype", $("#ctype").val());
- 			 newCase.append("cdesc", $("#cdesc").val());
+ 			 newCase.append("cdesc", $("#ctype").val());
+ 			 newCase.append("ceml" , $("#cemail").val());
+ 			 newCase.append("ccont", $("#ccont").val());
+
+ 			 if(!$("#employeeId").val() || !$("#cname").val() || !$("#ctype").val() || !$("#cdesc").val() || !$("#cemail").val() || !$("#ccont").val()) {
+ 			 	$(".alert").addClass("alert-show");
+ 			 	return;
+ 			 }
  			$.ajax({
  				type:"POST",
  				url:"register-client.php",
@@ -113,6 +128,7 @@ $(document).ready(function() {
         		processData: false,
  				success:function(resp) {
  					console.log(resp);
+ 					$('.alert').addClass(".")
  					$('#resetBtn').click();
  					totalCases();
  					present_cases();
@@ -120,6 +136,11 @@ $(document).ready(function() {
 
  			})
  		})
+ 	//For close alert button
+ 		$(document).on('click', '#close-alert', function(){
+ 			$(".alert").removeClass("alert-show");
+ 		});
+ 		
      // for retrive data from the temp-user table
 	     function getTempData() {
 	     	$.ajax({
@@ -130,23 +151,31 @@ $(document).ready(function() {
 	     			},
 	     		dataType: "json",
 	     		success:function(resp) {
-	     			$.each(resp, function(key, value) {
+	     			if(resp && resp.length > 0) {
+		     				$.each(resp, function(key, value) {
+		     				$(".tempUser").append(
+		    					'<tr>'+
+		     						'<td class="tempId">'+value['id']+'</td>' +
+		     						'<td>'+value['pwd']+'</td>' +
+		     						'<td>'+value['name']+'</td>' +
+		     						'<td>'+value['edu']+'</td>' +
+		     						'<td>'+value['exp']+'</td>' +
+		     						'<td>'+value['work']+'</td>' +
+		     						'<td>'+value['available']+'</td>' +
+		     						'<td>'+
+		     							 '<button class="btn bg-purp col-wh radius" id="approveUser">'+'Approve'+'</button> '+
+		     							 ' <button class="btn bg-purp col-wh radius" id="rejectUser">'+'Reject'+'</button>'+
+		     						'</td>'+
+		     					'</tr>'
+		     					);
+		     			})
+	     			}else {
 	     				$(".tempUser").append(
-	    					'<tr>'+
-	     						'<td class="tempId">'+value['id']+'</td>' +
-	     						'<td>'+value['pwd']+'</td>' +
-	     						'<td>'+value['name']+'</td>' +
-	     						'<td>'+value['edu']+'</td>' +
-	     						'<td>'+value['exp']+'</td>' +
-	     						'<td>'+value['work']+'</td>' +
-	     						'<td>'+value['available']+'</td>' +
-	     						'<td>'+
-	     							 '<button class="btn bg-purp col-wh radius" id="approveUser">'+'Approve'+'</button> '+
-	     							 ' <button class="btn bg-purp col-wh radius" id="rejectUser">'+'Reject'+'</button>'+
-	     						'</td>'+
-	     					'</tr>'
+	     					'<tr>'+
+	     						'<td colspan="8">'+'No any pending user request available'+'</td>'
 	     					);
-	     			})
+	     			}
+	     			
 	     		}
 	     	});
 	     }
@@ -249,11 +278,12 @@ $(document).ready(function() {
 	                        '<form action="update-work.php" method="post" enctype="multipart/form-data">'+
 	                            '<td class="caseId">'+value['case_id']+'</td>'+
 	                            '<td>'+value['client-name']+'</td>'+
+	                            '<td>'+value['email']+'</td>'+
+	                            '<td>'+value['contact']+'</td>'+
 	                            '<td class="text-start">'+value['case-desc']+'</td>'+
 	                            '<td>'+
 	                                '<label for="optionSelect">'+'Status:'+''+value['status']+ '</label>'+'<br>'+
 	                                '<select id="optionSelect" name="option" class="option-sty opts">'+
-	                                    '<option value="pending" disabled selected>'+'Select'+'</option>'+
 	                                    '<option value="pending">'+'Pending'+'</option>'+
 	                                    '<option value="done">'+'Done'+'</option>'+
 	                                '</select>'+
@@ -263,6 +293,7 @@ $(document).ready(function() {
 	                            '</td>'+
 	                            '<td>'+
 	                                '<input type="file" name="file[]" class="form-control files" multiple>'+
+	                                '<span class="filetxt">'+'You can choose multiple files'+'</span>'+
 	                            '</td>'+
 	                            '<td>'+
 	                                '<input type="submit" value="Update" class="btn radius bg-purp col-wh" id="caseUpdate">'+
@@ -312,8 +343,11 @@ $(document).ready(function() {
 			        processData: false,  
 			        contentType: false, 
 			        success: function(resp) {
-			        	$('#caseData').html("");
+			        	 $(".alert").addClass("alert-show");
+			        	 $(".alert-txt").text("Record updated successfully")
+			        	 $('#caseData').html("");
 			            userCase();
+			            
 			        },
 			    });
 			});
