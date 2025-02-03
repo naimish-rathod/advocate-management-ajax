@@ -4,7 +4,9 @@
 include 'connection.php';
 $statuss = "pending"; 
 $curdate = date('Y-m-d'); 
-$user = $_SESSION['user_uname'];
+if(isset($_SESSION['user_uname']){
+    $user = $_SESSION['user_uname'];
+}
 //Get temp_user table data
     if(isset($_GET['tempData'])) {
         // Prepare and execute the SQL query
