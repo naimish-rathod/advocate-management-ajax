@@ -4,8 +4,10 @@
 include 'connection.php';
 $statuss = "pending"; 
 $curdate = date('Y-m-d'); 
-if(isset($_SESSION['user_uname']){
-    $user = $_SESSION['user_uname'];
+if (isset($array['user_uname'])) {
+    $user_uname = $array['user_uname'];
+} else {
+    $user_uname = ''; 
 }
 //Get temp_user table data
     if(isset($_GET['tempData'])) {
